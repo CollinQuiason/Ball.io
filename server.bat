@@ -1,1 +1,2 @@
-http-server C:\Files\Programming\Servers\MBA3K -p 8085 -o
+cd Server
+node server.js
