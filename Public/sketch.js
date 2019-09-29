@@ -18,7 +18,7 @@ function setup(){
 
 
 
-	socket = io.connect('http://localhost:8080');
+	socket = io.connect('CollinRottingha.us:80');
 	socket.on('movement', controltick);
 	socket.on('enemymovement', enemycontroltick);
 	socket.on('stealblockrelease', stealblockrelease);
