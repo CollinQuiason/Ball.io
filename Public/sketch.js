@@ -13,7 +13,7 @@ function preload(){
 function setup(){
 	//h = window.innerHeight;
  	//w = window.innerWidth;
-	canvas = createCanvas(1920, 1080);
+	canvas = createCanvas(1300, 753);
 	background(0);
 
 
