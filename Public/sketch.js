@@ -18,9 +18,9 @@ function setup(){
 
 
 
-	socket = io.connect('CollinRottingha.us:80');
-	socket.on('movement', controltick);
-	socket.on('enemymovement', enemycontroltick);
+	socket = io.connect('localhost:80/ballio');
+	socket.on('movementp1', controltickp1);
+	socket.on('movementp2', controltickp2);
 	socket.on('stealblockrelease', stealblockrelease);
 
 
@@ -42,39 +42,38 @@ function draw(){
 		l: keyIsDown(65),
 		r: keyIsDown(68),
 		d: keyIsDown(83)
-	}
+  };
 	socket.emit('movement', moveData);
 
 	p1.tick();
 	p2.tick();
-
-	var isp1overball = (collideCircleCircle(p1.x, p1.y, 18, ballislife.x, ballislife.y, 10));
-	var isp2overball = (collideCircleCircle(p2.x, p2.y, 18, ballislife.x, ballislife.y, 10));
-
-
-	if (isp1overball && ballislife.dribbler != p1 && stealable){ 
-		ballislife.isDribbled = true;
-		ballislife.dribbler = p1;
-		stealable = false;
-		socket.emit('steal', true);
-	}
-	if (isp2overball && ballislife.dribbler != p2 && stealable){
-		ballislife.isDribbled = true;
-		ballislife.dribbler = p2;
-		stealable = false;
-		socket.emit('steal', true);
-	}
 	ballislife.tick()
 
-	fill(255, 0, 0);
+	console.log(p1.x, p2.x);
+	// var isp1overball = (collideCircleCircle(p1.x, p1.y, 18, ballislife.x, ballislife.y, 10));
+	// var isp2overball = (collideCircleCircle(p2.x, p2.y, 18, ballislife.x, ballislife.y, 10));
+
+
+	// if (isp1overball && ballislife.dribbler != p1 && stealable){
+	// 	ballislife.isDribbled = true;
+	// 	ballislife.dribbler = p1;
+	// 	stealable = false;
+	// 	socket.emit('steal', true);
+	// }
+	// if (isp2overball && ballislife.dribbler != p2 && stealable){
+	// 	ballislife.isDribbled = true;
+	// 	ballislife.dribbler = p2;
+	// 	stealable = false;
+	// 	socket.emit('steal', true);
+	// }
 	
+
+	fill(255, 0, 0);
 
 
 	//console.log(ballislife.isDribbled);
 	//console.log(ballislife.dribbler.x, ballislife.dribbler.y);
 	//console.log(ballislife.x, ballislife.y);
-	
-	
 }
 
 
@@ -82,57 +81,21 @@ function stealblockrelease(data){
 	stealable = true;
 }
 
-function controltick(data) {
-	ballislife.control(data, true);
-	if (data.s){//SLOW
-		if (data.u) { //UP
-	    p1.y -= 1;
-	  } if (data.l) { //LEFT
-	    p1.x -= 1;
-	  } if (data.r) { //RIGHT
-	    p1.x += 1;
-	  } if (data.d) { //DOWN
-	    p1.y += 1;
-	  }
-	}
-
-	else{
-	  if (data.u) { //UP
-	    p1.y -= 5;
-	  } if (data.l) { //LEFT
-	    p1.x -= 5;
-	  } if (data.r) { //RIGHT
-	    p1.x += 5;
-	  } if (data.d) { //DOWN
-	    p1.y += 5;
-	  }
-  }
-}
-function enemycontroltick(data) {
+function controltickp1(data) {
 	ballislife.control(data, false);
-	if (data.s){//SLOW
-		if (data.u) { //UP
-	    p2.y -= 1;
-	  } if (data.l) { //LEFT
-	    p2.x += 1;
-	  } if (data.r) { //RIGHT
-	    p2.x -= 1;
-	  } if (data.d) { //DOWN
-	    p2.y += 1;
-	  }
-	}
-
-	else{
-	  if (data.u) { //UP
-	    p2.y -= 5;
-	  } if (data.l) { //LEFT
-	    p2.x += 5;
-	  } if (data.r) { //RIGHT
-	    p2.x -= 5;
-	  } if (data.d) { //DOWN
-	    p2.y += 5;
-	  }
-  }
+	p1.x = data.p1.x;
+	p1.y = data.p1.y;
+	ballislife.x = data.ball.x;
+	ballislife.y = data.ball.y;
+	p1.tick();
+}
+function controltickp2(data) {
+	ballislife.control(data, false);
+	p2.x = data.p2.x;
+	p2.y = data.p2.y;
+	ballislife.x = data.ball.x;
+	ballislife.y = data.ball.y;
+	p2.tick();
 }
 
 /*

@@ -3,7 +3,6 @@ class Player{
 		this.x = thex;
 		this.y = they;
 		this.isp1 = pone;
-		this.tick();
 	}
 	tick(){
 		stroke(0);
